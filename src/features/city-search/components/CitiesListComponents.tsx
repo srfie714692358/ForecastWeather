@@ -73,7 +73,7 @@ export function ListBox({ open, setOpen, children }: { open: boolean; setOpen: (
 		<Popover open={open} onOpenChange={setOpen}>
 			{/* Invisible trigger required by Shadcn UI (Radix) Popover; positioned for visual alignment */}
 			<PopoverTrigger asChild>
-				<span className="-translate-y-2" />
+				<span className="-translate-y-2 translate-x-1.5" />
 			</PopoverTrigger>
 
 			<PopoverContent
@@ -81,7 +81,7 @@ export function ListBox({ open, setOpen, children }: { open: boolean; setOpen: (
 				onCloseAutoFocus={(e) => e.preventDefault()}
 				className="w-[545px] p-0 bg-transparent border-none shadow-none z-50"
 			>
-				<ScrollArea className="h-[200px] w-full">
+				<ScrollArea className="h-[200px] w-full pr-3">
 					<Command className="bg-transparent space-y-1 border-none">{children}</Command>
 				</ScrollArea>
 			</PopoverContent>
