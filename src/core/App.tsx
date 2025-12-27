@@ -8,6 +8,7 @@ import { useFetchWeather } from "@/hooks/useFetchWeather";
 import type { ReactElement } from "react";
 import { LoaderCircle } from "lucide-react";
 import { Earth } from "@/assets/icons";
+import Profile from "@/features/profile/Profile";
 
 /**
  * Placeholder component shown when no city has been searched yet.
@@ -60,6 +61,7 @@ function App() {
 					)}
 				</div>
 			</GlassyCard>
+			<Profile />
 		</div>
 	);
 }

@@ -2,7 +2,7 @@
 
 ![Weather App Preview](public/preview.png)
 
-A beautiful weather forecast application with city search functionality, built with React, TypeScript, and Vite. Features a glassmorphism UI design with animated autumn-themed backgrounds.
+A beautiful weather forecast application with city search functionality, built with React, TypeScript, and Vite. Features a glassmorphism UI design with animated autumn-themed backgrounds. You can see demo [here](https://srfie714692358.github.io/ForecastWeather/)
 
 ## Features
 
@@ -116,7 +116,7 @@ The application is a static site that can be deployed to any static hosting serv
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is open source and available under the [MIT License](LICENSE.md).
 
 ---
 
