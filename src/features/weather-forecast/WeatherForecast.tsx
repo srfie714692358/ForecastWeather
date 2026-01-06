@@ -5,6 +5,8 @@ import { AppStates } from "@/stores/globalStates";
 import type { DayWeather, Weather } from "@/types/WeatherDetail";
 import { useState, type ReactElement } from "react";
 
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+
 /**
  * Displays a single forecast entry (hourly or daily).
  */
@@ -17,7 +19,7 @@ interface ForecastProps {
 
 function Forecast({ index, label, status, temp }: ForecastProps): ReactElement {
 	return (
-		<div key={index} className="w-full text-center font-bold">
+		<div key={index} className="text-center font-bold ">
 			{label} <br />
 			<span className="font-semibold">
 				{status} &nbsp; {temp}°C
@@ -47,11 +49,13 @@ function ToggleButton({ label, active, onClick }: { label: string; active: boole
 function WeatherForecast(): ReactElement | null {
 	const [forecastType, setForecastType] = useState<"hours" | "days">("hours");
 	const weather = AppStates((s) => s.theCityWeather);
+	const nextPreviousButtonsClasses = cn(
+		"bg-[#FFE5D3]/25 hover:bg-[#FFE5D3]/25 hover:text-[#813100]",
+		"cursor-pointer border-none select-none",
+		"-translate-x-4 [&_svg]:stroke-3 -translate-y-3.5"
+	);
 
 	if (!weather) return null;
-
-	const nextHours = weather.nextHours.slice(0, 4);
-	const nextDays = weather.nextDays.slice(0, 4);
 
 	return (
 		<div className="w-full font-karma font-bold text-[#FFCEAC]">
@@ -62,27 +66,35 @@ function WeatherForecast(): ReactElement | null {
 			</div>
 
 			{/* Forecast list */}
-			<div className="mt-3 flex text-[16px]">
-				{forecastType === "days"
-					? nextDays.map((detail: DayWeather) => (
-							<Forecast
-								key={detail.time}
-								index={detail.time}
-								label={getWeekday(detail.time)}
-								status={getSimpleWeatherStatus(detail.weathercode, true)}
-								temp={Math.floor((detail.temp_max + detail.temp_min) / 2)}
-							/>
-					  ))
-					: nextHours.map((detail: Weather) => (
-							<Forecast
-								key={detail.time}
-								index={detail.time}
-								label={detail.time.split("T")[1]} // Extract time part (e.g., "14:00")
-								status={getSimpleWeatherStatus(detail.weathercode, true)}
-								temp={detail.temperature}
-							/>
-					  ))}
-			</div>
+			<Carousel className="w-[90%] mx-auto mt-3 text-[16px]" opts={{ align: "start" }}>
+				<CarouselContent className=" ">
+					{forecastType === "days"
+						? weather.nextDays.map((detail: DayWeather) => (
+								<CarouselItem className="basis-1/4 select-none">
+									<Forecast
+										key={detail.time}
+										index={detail.time}
+										label={getWeekday(detail.time)}
+										status={getSimpleWeatherStatus(detail.weathercode, true)}
+										temp={Math.floor((detail.temp_max + detail.temp_min) / 2)}
+									/>
+								</CarouselItem>
+						  ))
+						: weather.nextHours.slice(0, 20).map((detail: Weather) => (
+								<CarouselItem className="basis-1/4 select-none">
+									<Forecast
+										key={detail.time}
+										index={detail.time}
+										label={detail.time.split("T")[1]} // Extract time part (e.g., "14:00")
+										status={getSimpleWeatherStatus(detail.weathercode, true)}
+										temp={detail.temperature}
+									/>
+								</CarouselItem>
+						  ))}
+				</CarouselContent>
+				<CarouselPrevious className={cn(nextPreviousButtonsClasses, "translate-x-4")} />
+				<CarouselNext className={nextPreviousButtonsClasses} />
+			</Carousel>
 		</div>
 	);
 }
